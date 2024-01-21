@@ -53,7 +53,7 @@ func (a *Arena) get(end ...string) ([]byte, error) {
 
 }
 
-func (a *Arena) GetChannel(slug string) (Channel, error) {
+func (a *Arena) GetChannel(slug string) (*Channel, error) {
 	b, err := a.get("channels/", slug)
 	if err != nil {
 		return nil, err
@@ -82,4 +82,34 @@ func (a *Arena) GetBlock(id string) (*Block, error) {
 	}
 
 	return &block, nil
+}
+
+func (a *Arena) GetUser(id string) (*User, error) {
+	b, err := a.get("users/", id)
+	if err != nil {
+		return nil, err
+	}
+
+	u := User{}
+	err = json.Unmarshal(b, &u)
+	if err != nil {
+		return nil, err
+	}
+
+	return &u, nil
+}
+
+func (a *Arena) GetGroup(slug string) (*Group, error) {
+	b, err := a.get("groups/", slug)
+	if err != nil {
+		return nil, err
+	}
+
+	g := Group{}
+	err = json.Unmarshal(b, &g)
+	if err != nil {
+		return nil, err
+	}
+
+	return &g, nil
 }
