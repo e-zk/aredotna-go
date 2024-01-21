@@ -56,7 +56,7 @@ type Block struct {
 		} `json:"avatar_image"`
 		ChannelCount   int    `json:"channel_count"`
 		FollowingCount int    `json:"following_count"`
-		ProfileID      int    `json:"profile_id"`
+		ProfileId      int    `json:"profile_id"`
 		FollowerCount  int    `json:"follower_count"`
 		Initials       string `json:"initials"`
 		CanIndex       bool   `json:"can_index"`
@@ -71,12 +71,12 @@ type Block struct {
 		IsPendingReconfirmation     bool   `json:"is_pending_reconfirmation"`
 		IsPendingConfirmation       bool   `json:"is_pending_confirmation"`
 		Badge                       string `json:"badge"`
-		ID                          int    `json:"id"`
+		Id                          int    `json:"id"`
 		BaseClass                   string `json:"base_class"`
 		Class                       string `json:"class"`
 	} `json:"user"`
 	Connections []struct {
-		ID            int       `json:"id"`
+		Id            int       `json:"id"`
 		Title         string    `json:"title"`
 		CreatedAt     time.Time `json:"created_at"`
 		UpdatedAt     time.Time `json:"updated_at"`
@@ -88,7 +88,7 @@ type Block struct {
 		Length        int       `json:"length"`
 		Kind          string    `json:"kind"`
 		Status        string    `json:"status"`
-		UserID        int       `json:"user_id"`
+		UserId        int       `json:"user_id"`
 		Metadata      struct {
 			Description string `json:"description"`
 		} `json:"metadata"`
@@ -115,4 +115,86 @@ type Channel struct {
 	Manifest          map[string]string
 	Contents          []Block `json:"contents"`
 	//Items []string
+}
+
+type User struct {
+	CreatedAt   time.Time `json:"created_at"`
+	Slug        string    `json:"slug"`
+	Username    string    `json:"username"`
+	FirstName   string    `json:"first_name"`
+	LastName    string    `json:"last_name"`
+	FullName    string    `json:"full_name"`
+	Avatar      string    `json:"avatar"`
+	AvatarImage struct {
+		Thumb   string `json:"thumb"`
+		Display string `json:"display"`
+	} `json:"avatar_image"`
+	ChannelCount   int    `json:"channel_count"`
+	FollowingCount int    `json:"following_count"`
+	ProfileId      int    `json:"profile_id"`
+	FollowerCount  int    `json:"follower_count"`
+	Initials       string `json:"initials"`
+	CanIndex       bool   `json:"can_index"`
+	//Metadata       struct {
+	//	Description any `json:"description"`
+	//} `json:"metadata"`
+	IsPremium                   bool   `json:"is_premium"`
+	IsLifetimePremium           bool   `json:"is_lifetime_premium"`
+	IsSupporter                 bool   `json:"is_supporter"`
+	IsExceedingConnectionsLimit bool   `json:"is_exceeding_connections_limit"`
+	IsConfirmed                 bool   `json:"is_confirmed"`
+	IsPendingReconfirmation     bool   `json:"is_pending_reconfirmation"`
+	IsPendingConfirmation       bool   `json:"is_pending_confirmation"`
+	Badge                       string `json:"badge"`
+	Id                          int    `json:"id"`
+	BaseClass                   string `json:"base_class"`
+	Class                       string `json:"class"`
+}
+
+type Group struct {
+	Class       string    `json:"class"`
+	BaseClass   string    `json:"base_class"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	User        struct {
+		CreatedAt   time.Time `json:"created_at"`
+		Slug        string    `json:"slug"`
+		Username    string    `json:"username"`
+		FirstName   string    `json:"first_name"`
+		LastName    string    `json:"last_name"`
+		FullName    string    `json:"full_name"`
+		Avatar      string    `json:"avatar"`
+		AvatarImage struct {
+			Thumb   string `json:"thumb"`
+			Display string `json:"display"`
+		} `json:"avatar_image"`
+		ChannelCount   int    `json:"channel_count"`
+		FollowingCount int    `json:"following_count"`
+		ProfileId      int    `json:"profile_id"`
+		FollowerCount  int    `json:"follower_count"`
+		Initials       string `json:"initials"`
+		CanIndex       bool   `json:"can_index"`
+		//Metadata       struct {
+		//	Description any `json:"description"`
+		//} `json:"metadata"`
+		IsPremium                   bool `json:"is_premium"`
+		IsLifetimePremium           bool `json:"is_lifetime_premium"`
+		IsSupporter                 bool `json:"is_supporter"`
+		IsExceedingConnectionsLimit bool `json:"is_exceeding_connections_limit"`
+		IsConfirmed                 bool `json:"is_confirmed"`
+		IsPendingReconfirmation     bool `json:"is_pending_reconfirmation"`
+		IsPendingConfirmation       bool `json:"is_pending_confirmation"`
+		//Badge                       any    `json:"badge"`
+		Id        int    `json:"id"`
+		BaseClass string `json:"base_class"`
+		Class     string `json:"class"`
+	} `json:"user"`
+	Users           []any  `json:"users"`
+	MemberIds       []int  `json:"member_ids"`
+	AccessibleByIds []int  `json:"accessible_by_ids"`
+	Published       bool   `json:"published"`
+	Title           string `json:"title"`
+	Id              int    `json:"id"`
 }
