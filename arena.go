@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"path"
+	"net/url"
 	"time"
 )
 
@@ -24,10 +24,9 @@ func (a *Arena) get(end ...string) ([]byte, error) {
 		Timeout: time.Second * 5,
 	}
 
-	url := baseUrl + path.Join(end...)
-	//	log.Printf("url=> %q", url)
+	reqUrl, _ := url.JoinPath(baseUrl, end...)
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequest(http.MethodGet, reqUrl, nil)
 	if err != nil {
 		return []byte{}, err
 	}
