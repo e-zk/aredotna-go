@@ -1,5 +1,8 @@
 package aredotna
 
+// i used a json -> go struct converter for most of this,
+// so types may not be ideal.
+
 import (
 	"time"
 )
