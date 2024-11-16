@@ -2,7 +2,7 @@ package aredotna
 
 import (
 	"encoding/json"
-	"fmt"
+	//	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -19,12 +19,21 @@ func New(key string) *Arena {
 	return &Arena{key: key}
 }
 
-func (a *Arena) get(end ...string) ([]byte, error) {
+func (a *Arena) getPaginated(page int, per int, end ...string) ([]byte, error) {
 	c := http.Client{
 		Timeout: time.Second * 5,
 	}
 
 	reqUrl, _ := url.JoinPath(baseUrl, end...)
+
+	v := url.Values{}
+	if page != 0 {
+		v.Set("page", string(page))
+	}
+	if per != 0 {
+		v.Set("per", string(page))
+	}
+	reqUrl = reqUrl + "?" + v.Encode()
 
 	req, err := http.NewRequest(http.MethodGet, reqUrl, nil)
 	if err != nil {
@@ -52,14 +61,18 @@ func (a *Arena) get(end ...string) ([]byte, error) {
 
 }
 
-func (a *Arena) GetChannel(slug string) (*Channel, error) {
+func (a *Arena) get(end ...string) ([]byte, error) {
+	return a.getPaginated(0, 0, end...)
+}
+
+func (a *Arena) GetChannel(slug string) (*ApiChannelResp, error) {
 	b, err := a.get("channels/", slug)
 	if err != nil {
 		return nil, err
 	}
 
-	ch := Channel{}
-	err = json.Unmarshal(b, ch)
+	ch := ApiChannelResp{}
+	err = json.Unmarshal(b, &ch)
 	if err != nil {
 		return nil, err
 	}
@@ -67,6 +80,23 @@ func (a *Arena) GetChannel(slug string) (*Channel, error) {
 	return &ch, nil
 }
 
+// get channel contents (per = blocks per page; page = page)
+func (a *Arena) GetChannelContents(slug string, per int, page int) ([]ApiChannelBlock, error) {
+	b, err := a.getPaginated(per, page, "channels", slug, "contents")
+	if err != nil {
+		return nil, err
+	}
+
+	contents := []ApiChannelBlock{}
+	err = json.Unmarshal(b, &contents)
+	if err != nil {
+		return nil, err
+	}
+
+	return contents, nil
+}
+
+/*
 func (a *Arena) GetBlock(id string) (*Block, error) {
 	b, err := a.get("blocks/", id)
 	fmt.Printf("%s", string(b))
@@ -112,3 +142,4 @@ func (a *Arena) GetGroup(slug string) (*Group, error) {
 
 	return &g, nil
 }
+*/
