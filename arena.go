@@ -66,7 +66,7 @@ func (a *Arena) get(end ...string) ([]byte, error) {
 }
 
 func (a *Arena) GetChannel(slug string) (*ApiChannelResp, error) {
-	b, err := a.get("channels/", slug)
+	b, err := a.get("channels", slug, "thumb")
 	if err != nil {
 		return nil, err
 	}
