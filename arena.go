@@ -82,7 +82,7 @@ func (a *Arena) GetChannel(slug string) (*ApiChannelResp, error) {
 
 // get channel contents (per = blocks per page; page = page)
 func (a *Arena) GetChannelContents(slug string, per int, page int) ([]ApiChannelBlock, error) {
-	b, err := a.getPaginated(per, page, "channels", slug, "contents")
+	b, err := a.getPaginated(per, page, "channels", slug)
 	if err != nil {
 		return nil, err
 	}
