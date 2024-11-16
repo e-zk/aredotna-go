@@ -3,6 +3,7 @@ package aredotna
 // based on api responses
 
 import (
+	"html/template"
 	"time"
 )
 
@@ -99,18 +100,18 @@ type ApiBlockImage struct {
 
 // not full block + connection to channel info
 type ApiChannelBlock struct {
-	Id              int       `json:"id"`
-	Title           string    `json:"title,omitempty"`
-	UpdatedAt       time.Time `json:"updated_at"`
-	CreatedAt       time.Time `json:"created_at"`
-	State           string    `json:"state"`
-	CommentCount    int       `json:"comment_count"`
-	GeneratedTitle  string    `json:"generated_title"`
-	Content         string    `json:"content,omitempty"`
-	Description     string    `json:"description,omitempty"`
-	ContentHTML     string    `json:"content_html,omitempty"`
-	DescriptionHTML string    `json:"description_html,omitempty"`
-	Visibility      string    `json:"visibility"`
+	Id              int           `json:"id"`
+	Title           string        `json:"title,omitempty"`
+	UpdatedAt       time.Time     `json:"updated_at"`
+	CreatedAt       time.Time     `json:"created_at"`
+	State           string        `json:"state"`
+	CommentCount    int           `json:"comment_count"`
+	GeneratedTitle  string        `json:"generated_title"`
+	Content         string        `json:"content,omitempty"`
+	Description     string        `json:"description,omitempty"`
+	ContentHTML     template.HTML `json:"content_html,omitempty"`
+	DescriptionHTML template.HTML `json:"description_html,omitempty"`
+	Visibility      string        `json:"visibility"`
 	Source          *struct {
 		Url      string `json:"url"`
 		Title    string `json:"title"`
