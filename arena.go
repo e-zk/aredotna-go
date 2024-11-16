@@ -82,15 +82,20 @@ func (a *Arena) GetChannel(slug string) (*ApiChannelResp, error) {
 
 // get channel contents (per = blocks per page; page = page)
 func (a *Arena) GetChannelContents(slug string, per int, page int) ([]ApiChannelBlock, error) {
-	b, err := a.getPaginated(per, page, "channels", slug)
+	b, err := a.getPaginated(per, page, "channels", slug, "contents")
 	if err != nil {
 		return nil, err
 	}
 
-	contents := []ApiChannelBlock{}
-	err = json.Unmarshal(b, &contents)
+	ch := ApiChannelResp{}
+	err = json.Unmarshal(b, &ch)
 	if err != nil {
 		return nil, err
+	}
+
+	var contents []ApiChannelBlock
+	for _, c := range ch.Contents {
+		append(contents, c)
 	}
 
 	return contents, nil
