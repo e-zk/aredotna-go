@@ -6,6 +6,40 @@ import (
 	"time"
 )
 
+type ApiUser struct {
+	CreatedAt   time.Time `json:"created_at"`
+	Slug        string    `json:"slug"`
+	Username    string    `json:"username"`
+	FirstName   string    `json:"first_name"`
+	LastName    string    `json:"last_name"`
+	FullName    string    `json:"full_name"`
+	Avatar      string    `json:"avatar"`
+	AvatarImage struct {
+		Thumb   string `json:"thumb"`
+		Display string `json:"display"`
+	} `json:"avatar_image"`
+	ChannelCount   int    `json:"channel_count"`
+	FollowingCount int    `json:"following_count"`
+	ProfileId      int    `json:"profile_id"`
+	FollowerCount  int    `json:"follower_count"`
+	Initials       string `json:"initials"`
+	CanIndex       bool   `json:"can_index"`
+	//Metadata       struct {
+	//      Description *string `json:"description,omitempty"`
+	//} `json:"metadata"`
+	IsPremium                   bool   `json:"is_premium"`
+	IsLifetimePremium           bool   `json:"is_lifetime_premium"`
+	IsSupporter                 bool   `json:"is_supporter"`
+	IsExceedingConnectionsLimit bool   `json:"is_exceeding_connections_limit"`
+	IsConfirmed                 bool   `json:"is_confirmed"`
+	IsPendingReconfirmation     bool   `json:"is_pending_reconfirmation"`
+	IsPendingConfirmation       bool   `json:"is_pending_confirmation"`
+	Badge                       string `json:"badge"`
+	Id                          int    `json:"id"`
+	BaseClass                   string `json:"base_class"`
+	Class                       string `json:"class"`
+}
+
 type ApiChannelUser struct {
 	CreatedAt   time.Time `json:"created_at"`
 	Slug        string    `json:"slug"`

@@ -111,15 +111,15 @@ func (a *Arena) GetBlock(id string) (*Block, error) {
 	}
 
 	return &block, nil
-}
+}*/
 
-func (a *Arena) GetUser(id string) (*User, error) {
+func (a *Arena) GetUser(id string) (*ApiUser, error) {
 	b, err := a.get("users/", id)
 	if err != nil {
 		return nil, err
 	}
 
-	u := User{}
+	u := ApiUser{}
 	err = json.Unmarshal(b, &u)
 	if err != nil {
 		return nil, err
@@ -128,6 +128,7 @@ func (a *Arena) GetUser(id string) (*User, error) {
 	return &u, nil
 }
 
+/*
 func (a *Arena) GetGroup(slug string) (*Group, error) {
 	b, err := a.get("groups/", slug)
 	if err != nil {
@@ -141,5 +142,4 @@ func (a *Arena) GetGroup(slug string) (*Group, error) {
 	}
 
 	return &g, nil
-}
-*/
+}*/
