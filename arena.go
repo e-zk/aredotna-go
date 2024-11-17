@@ -28,10 +28,10 @@ func (a *Arena) getPaginated(per, page int, end ...string) ([]byte, error) {
 
 	v := url.Values{}
 	if page != 0 {
-		v.Set("page", string(page))
+		v.Set("page", strconv.Itoa(page))
 	}
 	if per != 0 {
-		v.Set("per", string(page))
+		v.Set("per", strconv.Itoa(per))
 	}
 	reqUrl = reqUrl + "?" + v.Encode()
 
