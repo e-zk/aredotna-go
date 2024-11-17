@@ -19,7 +19,7 @@ func New(key string) *Arena {
 	return &Arena{key: key}
 }
 
-func (a *Arena) getPaginated(page int, per int, end ...string) ([]byte, error) {
+func (a *Arena) getPaginated(per, page int, end ...string) ([]byte, error) {
 	c := http.Client{
 		Timeout: time.Second * 5,
 	}
