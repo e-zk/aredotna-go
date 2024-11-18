@@ -127,6 +127,7 @@ type ApiChannelBlock struct {
 	BaseClass           string          `json:"base_class"`
 	Class               string          `json:"class"`
 	User                *ApiChannelUser `json:"user"`
+	Slug                string          `json:"slug,omitempty"`
 	Position            int             `json:"position"`
 	Selected            bool            `json:"selected"`
 	ConnectionId        int             `json:"connection_id"`
