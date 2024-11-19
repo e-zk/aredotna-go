@@ -9,35 +9,40 @@ import (
 	"time"
 )
 
-const baseUrl = "https://api.are.na/v2/"
+type Parameters map[string]string
+
+func (p Parameters) Values() url.Values {
+	v := url.Values{}
+	for k, v := range Parameters {
+		v.Set(k, v)
+	}
+	return v
+}
 
 type Arena struct {
-	key string
+	Client  http.Client
+	BaseURL string
+	key     string
 }
 
 func New(key string) *Arena {
-	return &Arena{key: key}
+	return &Arena{
+		BaseURL: "https://api.are.na/v2",
+		Client: &http.Client{
+			Timeout: a.Timeout,
+		},
+		key: key,
+	}
 }
 
-func (a *Arena) getPaginated(per, page int, end ...string) ([]byte, error) {
-	c := http.Client{
-		Timeout: time.Second * 5,
-	}
+func (a *Arena) get(path string, params Parameters, target any) error {
 
-	reqUrl, _ := url.JoinPath(baseUrl, end...)
+	reqURL, _ := url.JoinPath(a.BaseURL, path)
+	reqURL = reqUrl + "?" + params.Encode()
 
-	v := url.Values{}
-	if page != 0 {
-		v.Set("page", strconv.Itoa(page))
-	}
-	if per != 0 {
-		v.Set("per", strconv.Itoa(per))
-	}
-	reqUrl = reqUrl + "?" + v.Encode()
-
-	req, err := http.NewRequest(http.MethodGet, reqUrl, nil)
+	req, err := http.NewRequest(http.MethodGet, reqURL, nil)
 	if err != nil {
-		return []byte{}, err
+		return errors.Wrapf(err, "invalid request %q", url)
 	}
 
 	req.Header.Add("Authorization", "Bearer "+a.key)
@@ -45,11 +50,11 @@ func (a *Arena) getPaginated(per, page int, end ...string) ([]byte, error) {
 
 	res, err := c.Do(req)
 	if err != nil {
-		return []byte{}, err
+		return errors.Wrapf(err, "executing request for %q failed", reqURL)
 	}
 
 	if res.Body == nil {
-		return []byte{}, err
+		return fmt.Errorf("no data returned for %q", reqURL)
 	}
 
 	x, err := ioutil.ReadAll(res.Body)
@@ -57,48 +62,13 @@ func (a *Arena) getPaginated(per, page int, end ...string) ([]byte, error) {
 		return []byte{}, err
 	}
 
-	return x, nil
-
-}
-
-func (a *Arena) get(end ...string) ([]byte, error) {
-	return a.getPaginated(0, 0, end...)
-}
-
-func (a *Arena) GetChannel(slug string) (*ApiChannelResp, error) {
-	b, err := a.get("channels", slug, "thumb")
+	err = json.Unmarshal(b, target)
 	if err != nil {
-		return nil, err
+		return errors.Wrapf(err, "json unmarshal error for %q", reqURL)
 	}
 
-	ch := ApiChannelResp{}
-	err = json.Unmarshal(b, &ch)
-	if err != nil {
-		return nil, err
-	}
+	return
 
-	return &ch, nil
-}
-
-// get channel contents (per = blocks per page; page = page)
-func (a *Arena) GetChannelContents(slug string, per int, page int) ([]ApiChannelBlock, error) {
-	b, err := a.getPaginated(per, page, "channels", slug)
-	if err != nil {
-		return nil, err
-	}
-
-	ch := ApiChannelResp{}
-	err = json.Unmarshal(b, &ch)
-	if err != nil {
-		return nil, err
-	}
-
-	var contents []ApiChannelBlock
-	for _, c := range ch.Contents {
-		contents = append(contents, c)
-	}
-
-	return contents, nil
 }
 
 /*
