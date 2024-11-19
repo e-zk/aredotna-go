@@ -71,36 +71,22 @@ func (a *Arena) get(path string, params Parameters, target any) error {
 
 }
 
-/*
-func (a *Arena) GetBlock(id string) (*Block, error) {
-	b, err := a.get("blocks/", id)
-	fmt.Printf("%s", string(b))
+func (a *Arena) GetBlock(id string, params Parameters) (b *Block, err error) {
+	b, err := a.get("blocks/"+id, params, &block)
 	if err != nil {
 		return nil, err
 	}
 
-	block := Block{}
-	err = json.Unmarshal(b, &block)
+	return
+}
+
+func (a *Arena) GetUser(id string, params Parameters) (user *ApiUser, err error) {
+	b, err := a.get("users/"+id, params, &user)
 	if err != nil {
 		return nil, err
 	}
 
-	return &block, nil
-}*/
-
-func (a *Arena) GetUser(id string) (*ApiUser, error) {
-	b, err := a.get("users/", id)
-	if err != nil {
-		return nil, err
-	}
-
-	u := ApiUser{}
-	err = json.Unmarshal(b, &u)
-	if err != nil {
-		return nil, err
-	}
-
-	return &u, nil
+	return
 }
 
 /*
