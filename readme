@@ -1,19 +1,21 @@
 are.na module :: wip
 ====================
 
-currently the structs returned are plain representations of the json that the
-api returns.
-but i want to make custom structs that are more useful for creating software
-with. for example have a User.GetChannels() function that returns all user's
-channels, or Channel.GetBlocks(page, per).
+essentially a from-scratch rewrite of https://github.com/xanderseren/arena-go
+with the following goals:
 
-done
-----
-functions:
-GetChannel()
-GetChannelContents()	// (paginated channel blocks)
-GetUser()
+- no third-party modules
+- modern golang (arena-go is 7 years old)
+- proper tests
+- no '*Service' stuff (provides the a.Channel.GetBlocks(), type of interaction)
+  - i think it adds just slightly more complexity with not that much payoff in
+    terms of usability/readability.
+
+status
+------
+complete mess. in progres of trying to mimic xanderseren/arena-go as much as
+possible to try and clean it up.
 
 todo
 ----
-everything else
+everything
