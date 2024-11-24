@@ -1,6 +1,8 @@
 package aredotna
 
 import (
+	"net/url"
+	"sort"
 	"time"
 )
 
@@ -43,7 +45,7 @@ type Channel struct {
 
 func (a *Arena) GetChannelThumb(slug string, params Parameters) (ch *Channel, err error) {
 	path, _ := url.JoinPath("channels", slug, "thumb")
-	b, err := a.get(path, params, &ch)
+	err = a.get(path, params, &ch)
 	if err != nil {
 		return nil, err
 	}
@@ -52,35 +54,22 @@ func (a *Arena) GetChannelThumb(slug string, params Parameters) (ch *Channel, er
 }
 
 func (a *Arena) GetChannel(slug string, params Parameters) (ch *Channel, err error) {
-	b, err := a.get(params, "channels/"+slug, &ch)
+	err = a.get("channels/"+slug, params, &ch)
 	if err != nil {
 		return nil, err
 	}
 
 	sort.Slice(ch.Contents[:], func(i, j int) bool {
-		return ch.Contents[i].Position > channel.Contents[j].Position
+		return ch.Contents[i].Position > ch.Contents[j].Position
 	})
 
 	return
 }
 
 // get channel contents (per = blocks per page; page = page)
-func (a *Arena) GetChannelContents(slug string, per int, page int) ([]ApiChannelBlock, error) {
-	b, err := a.getPaginated(per, page, "channels", slug)
-	if err != nil {
-		return nil, err
-	}
-
-	ch := ApiChannelResp{}
-	err = json.Unmarshal(b, &ch)
-	if err != nil {
-		return nil, err
-	}
-
-	var contents []ApiChannelBlock
-	for _, c := range ch.Contents {
-		contents = append(contents, c)
-	}
-
-	return contents, nil
-}
+//func (a *Arena) GetChannelContents(slug string, params Parameters) (b []Block, err error) {
+//	b, err := a.getPaginated(per, page, "channels", slug)
+//	if err != nil {
+//		return nil, err
+//	}
+//}
