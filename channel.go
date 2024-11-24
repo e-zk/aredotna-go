@@ -43,6 +43,10 @@ type Channel struct {
 	//Collaborators []User `json:"collaborators"`
 }
 
+type channelContents struct {
+	Contents []Block `json:"contents"`
+}
+
 func (a *Arena) GetChannelThumb(slug string, params Parameters) (ch *Channel, err error) {
 	path, _ := url.JoinPath("channels", slug, "thumb")
 	err = a.get(path, params, &ch)
@@ -66,10 +70,16 @@ func (a *Arena) GetChannel(slug string, params Parameters) (ch *Channel, err err
 	return
 }
 
-// get channel contents (per = blocks per page; page = page)
-//func (a *Arena) GetChannelContents(slug string, params Parameters) (b []Block, err error) {
-//	b, err := a.getPaginated(per, page, "channels", slug)
-//	if err != nil {
-//		return nil, err
-//	}
-//}
+func (a *Arena) GetChannelContents(slug string, params Parameters) (b *[]Block, err error) {
+	var ch channelContents
+	err = a.get("channels/"+slug+"/contents", params, &ch)
+	if err != nil {
+		return nil, err
+	}
+
+	sort.Slice(ch.Contents[:], func(i, j int) bool {
+		return ch.Contents[i].Position > ch.Contents[j].Position
+	})
+
+	return &ch.Contents, nil
+}
