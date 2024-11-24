@@ -43,7 +43,7 @@ type Channel struct {
 	//Collaborators []User `json:"collaborators"`
 }
 
-type channelContents struct {
+type ChannelContents struct {
 	Contents []Block `json:"contents"`
 }
 
@@ -70,8 +70,7 @@ func (a *Arena) GetChannel(slug string, params Parameters) (ch *Channel, err err
 	return
 }
 
-func (a *Arena) GetChannelContents(slug string, params Parameters) (b *[]Block, err error) {
-	var ch channelContents
+func (a *Arena) GetChannelContents(slug string, params Parameters) (ch *ChannelContents, err error) {
 	err = a.get("channels/"+slug+"/contents", params, &ch)
 	if err != nil {
 		return nil, err
@@ -81,5 +80,5 @@ func (a *Arena) GetChannelContents(slug string, params Parameters) (b *[]Block, 
 		return ch.Contents[i].Position > ch.Contents[j].Position
 	})
 
-	return &ch.Contents, nil
+	return
 }
